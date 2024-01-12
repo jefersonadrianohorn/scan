@@ -1,0 +1,25 @@
+function lerPlanilha() {
+  var planilhaId = '1-StDBPkFpbT0YVgQLapuzE3ZgDZofuGzPkb00DSwvFM';
+  var folha = SpreadsheetApp.openById(planilhaId).getActiveSheet();
+  
+  var dados = folha.getDataRange().getValues();
+  
+  var fusoHorarioBrasilia = "GMT-3";
+  
+  var dataAtual = new Date();
+  var dataAtualFormatada = Utilities.formatDate(dataAtual, fusoHorarioBrasilia, "dd/MM/yyyy");
+
+  for (var i = 1; i < dados.length; i++) {
+    var temperatura = Number(dados[i][0]); // Converte para número
+    var umidade = Number(dados[i][1]); // Converte para número
+    var umidadeSoloAtual = Number(dados[i][2]); // Converte para número
+    var horaAtualString = folha.getRange(i + 1, 4).getDisplayValue(); // Obtém o valor exibido na célula
+    var dataAtualNaPlanilha = new Date(dados[i][4]);
+
+    // Se a data na planilha é igual à data atual
+    if (dataAtualNaPlanilha.toDateString() === dataAtual.toDateString()) {
+      // Exibindo os dados no console apenas se a data for igual
+      console.log('Temperatura: ' + (isNaN(temperatura) ? 'N/A' : temperatura.toFixed(2)) + ', Umidade: ' + (isNaN(umidade) ? 'N/A' : umidade.toFixed(2)) + ', Umidade Solo Atual: ' + (isNaN(umidadeSoloAtual) ? 'N/A' : umidadeSoloAtual.toFixed(2)) + ', Hora Atual: ' + horaAtualString + ', Data Atual: ' + dataAtualFormatada);
+    }
+  }
+}
